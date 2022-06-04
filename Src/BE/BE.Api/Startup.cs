@@ -27,10 +27,19 @@ namespace BE.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterMediatR();
+            
             services.RegisterServices();
+            
+            services.RegisterDBContext(Configuration);
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
+            
             services.AddResponseCaching();
+            
             services.AddResponseCompression();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BE.Api", Version = "v1" }); 

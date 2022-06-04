@@ -1,6 +1,8 @@
 ﻿using BE.Contracts;
+using BE.Data.DbCtx;
 using BE.Data.Dtos;
-using System.Collections.Generic;
+using BE.Data.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace BE.Services
@@ -8,34 +10,41 @@ namespace BE.Services
     public class AuthService: IAuthService
     {
         #region Private Readonly Fields
-               
+
+        private readonly ApplicationDbContext _dbContext;
 
         #endregion
 
         #region Constructor
 
-        public AuthService()
+        public AuthService(ApplicationDbContext dbContext)
         {
-            
+            _dbContext = dbContext;
         }
 
         #endregion
 
         #region Methods
 
-        public Task<ListUserDto> CreateUser(UserDto userDto)
+        public async Task<User> CreateUser(User user)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                await _dbContext.AddAsync<User>(user);
+
+                await _dbContext.SaveChangesAsync();
+
+                return user;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task<ListUserDto> EditUser(EditUserDto userDto)
+        public async Task<User> GetUser(int id)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IEnumerable<ListUserDto>> LoadAllUsers()
-        {
-            throw new System.NotImplementedException();
+            return await _dbContext.Users.FindAsync(id);
         }
 
         #endregion

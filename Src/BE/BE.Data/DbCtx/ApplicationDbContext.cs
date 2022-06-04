@@ -10,9 +10,9 @@ namespace BE.Data.DbCtx
         {
         }
 
-        public DbSet<CartItem>Cart { get; set; }
+        //public DbSet<CartItem>Cart { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        //public DbSet<Product> Products { get; set; }
 
         public DbSet<User> Users { get; set; }
     }

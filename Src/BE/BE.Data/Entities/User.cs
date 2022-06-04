@@ -20,10 +20,12 @@ namespace BE.Data.Entities
 
         [StringLength(15, ErrorMessage = "Invalid username")]
         [Required(ErrorMessage = "The field with username {0} is required")]
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         [StringLength(120, ErrorMessage = "Invalid password")]
         [Required(ErrorMessage = "The field with password {0} is required")]
         public string HashedPassword { get; set; }
+
+        public string Role { get; set; }
     }
 }

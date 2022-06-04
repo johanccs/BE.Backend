@@ -1,29 +1,31 @@
-﻿using BE.Api.AutoMapperProfile;
+﻿using AutoMapper;
 using BE.Common.Config;
 using BE.Contracts;
 using BE.Data.Dtos;
+using BE.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace BE.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
         #region Readonly Fields
 
         private readonly ILoginService _loginService;
-
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region Ctor
 
-        public LoginController(ILoginService loginService)
+        public LoginController(ILoginService loginService, IMapper mapper)
         {
             _loginService = loginService;
+            _mapper = mapper;
         }
 
         #endregion
@@ -38,15 +40,17 @@ namespace BE.Api.Controllers
                 if (!ModelState.IsValid || login == null)
                     return BadRequest();
 
-                var loggedUser = await _loginService.Login(login);
+                var user = _mapper.Map<User>(login);
 
-                if (loggedUser == null)
-                    return Unauthorized();
+                var result = await _loginService.Login(user);
 
+                if (result == null)
+                    return Unauthorized("Invalid username or password");
+
+                var mappedUser = _mapper.Map<LoggedInDto>(result);
                 var tokenString = GlobalConfig.GenerateJWTToken();
 
-                return Ok(new { Token = tokenString, Name = loggedUser.Name, Surname = loggedUser.Surname });
-
+                return Ok(new { Token = tokenString, Name = mappedUser.Name, Surname = mappedUser.Surname });
             }
             catch (Exception ex)
             {

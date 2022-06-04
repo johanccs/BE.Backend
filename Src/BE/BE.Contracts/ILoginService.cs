@@ -1,10 +1,10 @@
-﻿using BE.Data.Dtos;
+﻿using BE.Data.Entities;
 using System.Threading.Tasks;
 
 namespace BE.Contracts
 {
     public interface ILoginService
     {
-        Task<LoggedInDto> Login(LoginDto user);
+        Task<User> Login(User user);
     }
 }

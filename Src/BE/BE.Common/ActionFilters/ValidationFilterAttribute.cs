@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BE.Common.ActionFilters
 {
-    public class ValidationFilterAttribute : Microsoft.AspNetCore.Mvc.Filters.IActionFilter
+    public class ValidationFilterAttribute : IActionFilter
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {

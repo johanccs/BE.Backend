@@ -1,37 +1,43 @@
-﻿using BE.Common.ActionFilters;
+﻿using AutoMapper;
+using BE.Common.ActionFilters;
 using BE.Contracts;
 using BE.Data.Dtos;
+using BE.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BE.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         #region Private Readonly Field
 
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
+        private readonly IPasswordHelper _passwordHelper;
 
         #endregion
 
         #region Constructor
 
-        public AuthController(IAuthService authService)
+        public AuthController(
+            IAuthService authService, IMapper mapper, IPasswordHelper passwordHelper)
         {
             _authService = authService;
+            _mapper = mapper;
+            _passwordHelper = passwordHelper;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> LoadAllUsers()
+        [HttpGet ("{id}", Name ="getUser")]
+        public async Task<ActionResult<ListUserDto>> Get(int id)
         {
-            var result = await _authService.LoadAllUsers();
+            var result = await _authService.GetUser(id);
 
             if (result == null)
                 return NotFound();
@@ -43,29 +49,21 @@ namespace BE.Api.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult<UserDto>> CreateUser(UserDto userDto)
         {
-            var result = await _authService.CreateUser(userDto);
+            var hashedPassword = _passwordHelper.HashPassword(userDto.Password);
+
+            var user = _mapper.Map<User>(userDto);
+            user.HashedPassword = hashedPassword;
+
+            var result = await _authService.CreateUser(user);
 
             if (result == null)
                 return BadRequest("User could not be created");
             else
-                return Ok(result);
-        }
-
-        [HttpPut]
-        [Route("edituser")]
-        public async Task<ActionResult<EditUserDto>> EditUser(EditUserDto user)
-        {
-            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                var listUserDto =_mapper.Map<ListUserDto>(result);
+
+                return new CreatedAtRouteResult("getUser", new { Id = listUserDto.Id }, listUserDto);
             }
-
-            var result = await _authService.EditUser(user);
-
-            if (result == null)
-                return NotFound("User not found");
-            else
-                return Ok(result);
         }
 
         #endregion
