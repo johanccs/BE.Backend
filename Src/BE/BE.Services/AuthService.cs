@@ -1,6 +1,7 @@
 ﻿using BE.Contracts;
 using BE.Data.DbCtx;
 using BE.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -45,6 +46,11 @@ namespace BE.Services
         public async Task<User> GetUser(int id)
         {
             return await _dbContext.Users.FindAsync(id);
+        }
+
+        public async Task<User> GetUser(string email)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         #endregion

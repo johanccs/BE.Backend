@@ -1,0 +1,30 @@
+ "products": [
+       {
+        "brand":"The Brand",
+        "product_category":"25 G",
+        "manufacturer_number":"SKU00001",
+        "product":"The Product Description",
+        "batch_code":"BC2021091455",
+        "expiry_date":"0000-00-00",                                 leave blank
+        "vat":"15",
+        "unit_of_measure":"CS",
+        "weight":"100.00",
+        "cubic_meters":"12",
+        "length":"3",                                               leave blank                                  
+        "width":"2",                                                leave blank
+        "height":"2",                                               leave blank
+        "orderable":"Yes",
+        "returnable":"",
+        "manufacturer":"The Manufacturer",
+        "life_span_from":"0000-00-00",
+        "life_span_to":"0000-00-00",
+        "cost_price":168,                                           don't change on update
+        "price":177,                                                selling price
+        "units":18,                                                 default to 1
+        "active":"yes",
+        "created_time":"2020-02-03T00:00:00",					     //optional
+        "new_manufacturer_number":"1001005065",                     //optional
+        "product_id":"27193"                                       //optional on update provide value
+       }
+    ]
+}

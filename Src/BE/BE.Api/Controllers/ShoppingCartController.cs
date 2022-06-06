@@ -32,6 +32,7 @@ namespace BE.Api.Controllers
         #region Methods
 
         [HttpPost()]
+        [ResponseCache(Duration = 120)]
         public async Task<IActionResult> CreateCartItem(List<CartItem> cartItems)
         {
             try

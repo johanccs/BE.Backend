@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CE.Services
+namespace BE.Services
 {
     public class ProductService : IProdService
     {
@@ -26,7 +26,6 @@ namespace CE.Services
         #endregion
 
         #region Public Methods
-
 
         public async Task<List<Product>> GetProducts()
         {

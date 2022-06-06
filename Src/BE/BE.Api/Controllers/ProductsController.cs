@@ -30,6 +30,7 @@ namespace BE.Api.Controllers
         #region Methods
 
         [HttpGet()]
+        [ResponseCache(Duration = 120)]
         public async Task<IActionResult> Get()
         {
             try

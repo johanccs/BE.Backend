@@ -7,6 +7,8 @@ namespace BE.Contracts
     {
         Task<User>GetUser(int id);
 
+        Task<User> GetUser(string email);
+
         Task<User> CreateUser(User user);
     }
 }
