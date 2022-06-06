@@ -1,3 +1,4 @@
+using BE.Infrastructure.Notification.Classes;
 using BE.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,12 +16,13 @@ namespace BE.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-        }
-
-        public Startup()
-        {
             LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
         }
+
+        //public Startup()
+        //{
+        //    LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+        //}
 
         public IConfiguration Configuration { get; }
 
@@ -28,7 +30,7 @@ namespace BE.Api
         {
             services.RegisterMediatR();
             
-            services.RegisterServices();
+            services.RegisterServices(GetConfig());
             
             services.RegisterDBContext(Configuration);
 
@@ -72,5 +74,19 @@ namespace BE.Api
                 endpoints.MapControllers();
             });
         }
+
+        #region Private Methods
+
+        private Config GetConfig()
+        {
+            var config = new Config(
+                Configuration["SMTPConfig:smtpserver"], 
+                Configuration["SMTPConfig:username"], 
+                Configuration["SMTPConfig:password"]);
+
+            return config;
+        }
+
+        #endregion
     }
 }

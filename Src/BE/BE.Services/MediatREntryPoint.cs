@@ -1,4 +1,4 @@
-﻿namespace CE.Services
+﻿namespace BE.Services
 {
     public class MediatREntryPoint
     {

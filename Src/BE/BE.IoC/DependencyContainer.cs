@@ -6,17 +6,17 @@ using BE.Infrastructure.Logging;
 using BE.Infrastructure.Notification;
 using BE.Infrastructure.Notification.Classes;
 using BE.Services;
-using CE.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace BE.IoC
 {
     public static class DependencyContainer
     {
-        public static void RegisterServices(this IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services, Config config)
         {
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IAuthService, AuthService>();
@@ -24,7 +24,7 @@ namespace BE.IoC
             services.AddScoped<IPasswordHelper, PasswordHelper>();
             services.AddScoped<IProdService, ProductService>();
             services.AddScoped<INotificationService<EmailMessage>>
-                (x => new EmailService(new Config("smtpauth.mweb.co.za", "56718804@mweb.co.za", "@1Mops4moa")));
+                (x => new EmailService(config));
             services.AddScoped<ICartService, CartService>();
            services.AddScoped<ILoggerService, LoggerService>();
         }
