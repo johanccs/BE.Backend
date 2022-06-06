@@ -16,6 +16,7 @@ namespace BE.Api.Controllers
         #region Readonly Fields
 
         private readonly ILoginService _loginService;
+        private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
         private readonly IPasswordHelper _passwordHelper;
 
@@ -23,11 +24,16 @@ namespace BE.Api.Controllers
 
         #region Ctor
 
-        public LoginController(ILoginService loginService, IMapper mapper, IPasswordHelper passwordHelper)
+        public LoginController(
+            ILoginService loginService, 
+            IMapper mapper, 
+            IPasswordHelper passwordHelper,
+            ILoggerService logger)
         {
             _loginService = loginService;
             _mapper = mapper;
             _passwordHelper = passwordHelper;
+            _logger = logger;
         }
 
         #endregion
@@ -53,6 +59,8 @@ namespace BE.Api.Controllers
                 var mappedUser = _mapper.Map<LoggedInDto>(result);
                 var tokenString = GlobalConfig.GenerateJWTToken();
 
+                _logger.LoginIngo($"User logged in @ {DateTime.Now.ToString("dd-MM-yyyy")}");
+
                 return Ok(new { 
                     Token = tokenString, 
                     UserId = mappedUser.Id, 
@@ -61,6 +69,7 @@ namespace BE.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

@@ -2,6 +2,7 @@
 using BE.Common.Helpers;
 using BE.Contracts;
 using BE.Data.DbCtx;
+using BE.Infrastructure.Logging;
 using BE.Infrastructure.Notification;
 using BE.Infrastructure.Notification.Classes;
 using BE.Services;
@@ -25,7 +26,7 @@ namespace BE.IoC
             services.AddScoped<INotificationService<EmailMessage>>
                 (x => new EmailService(new Config("smtpauth.mweb.co.za", "56718804@mweb.co.za", "@1Mops4moa")));
             services.AddScoped<ICartService, CartService>();
-            //services.AddScoped<ILoggerService, LoggerService>();
+           services.AddScoped<ILoggerService, LoggerService>();
         }
 
         public static void RegisterMediatR(this IServiceCollection services)
