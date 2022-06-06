@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace BE.Contracts
 {
-    public interface IProdService
+    public interface ICartService
     {
-        Task<List<Product>> GetProducts();
+        Task<bool> CheckOut(List<CartItem> cartItems);
     }
 }

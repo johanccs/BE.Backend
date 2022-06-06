@@ -17,15 +17,17 @@ namespace BE.Api.Controllers
 
         private readonly ILoginService _loginService;
         private readonly IMapper _mapper;
+        private readonly IPasswordHelper _passwordHelper;
 
         #endregion
 
         #region Ctor
 
-        public LoginController(ILoginService loginService, IMapper mapper)
+        public LoginController(ILoginService loginService, IMapper mapper, IPasswordHelper passwordHelper)
         {
             _loginService = loginService;
             _mapper = mapper;
+            _passwordHelper = passwordHelper;
         }
 
         #endregion
@@ -41,6 +43,7 @@ namespace BE.Api.Controllers
                     return BadRequest();
 
                 var user = _mapper.Map<User>(login);
+                user.HashedPassword = _passwordHelper.HashPassword(login.Password);
 
                 var result = await _loginService.Login(user);
 
@@ -50,7 +53,11 @@ namespace BE.Api.Controllers
                 var mappedUser = _mapper.Map<LoggedInDto>(result);
                 var tokenString = GlobalConfig.GenerateJWTToken();
 
-                return Ok(new { Token = tokenString, Name = mappedUser.Name, Surname = mappedUser.Surname });
+                return Ok(new { 
+                    Token = tokenString, 
+                    UserId = mappedUser.Id, 
+                    Name = mappedUser.Name, 
+                    Surname = mappedUser.Surname });
             }
             catch (Exception ex)
             {

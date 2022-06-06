@@ -18,7 +18,7 @@ namespace BE.Data.Entities
         [StringLength(30, ErrorMessage = "Invalid surname length")]
         public string Surname { get; set; }
 
-        [StringLength(15, ErrorMessage = "Invalid username")]
+        [StringLength(80, ErrorMessage = "Invalid username")]
         [Required(ErrorMessage = "The field with username {0} is required")]
         public string Email { get; set; }
 

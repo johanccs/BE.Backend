@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BE.Data.Entities
+﻿namespace BE.Data.Dtos
 {
-    public class Product
+    public class ListProductDto
     {
         public int Id { get; set; }
 
@@ -10,7 +8,6 @@ namespace BE.Data.Entities
 
         public string Name { get; set; }
 
-        [Column(TypeName = "decimal(18,4")]
         public decimal Price { get; set; }
 
         public int Qty { get; set; }

@@ -1,6 +1,9 @@
 ﻿using BE.Contracts;
+using BE.Data.DbCtx;
+using BE.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Text.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CE.Services
@@ -9,26 +12,49 @@ namespace CE.Services
     {
         #region Readonly Fields
 
-     
+        private readonly ApplicationDbContext _dbContext;
+
         #endregion
 
         #region Ctor
 
-        public ProductService()
+        public ProductService(ApplicationDbContext dbContext)
         {
-          
+            _dbContext = dbContext;
         }
 
         #endregion
 
-        #region Methods
+        #region Public Methods
 
-      
+
+        public async Task<List<Product>> GetProducts()
+        {
+            try
+            {
+                var results = await _dbContext.Products.ToListAsync();
+
+                return AddPathPrefix(results);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         #endregion
 
         #region Private Methods
 
-      
+        private List<Product>AddPathPrefix(List<Product>products)
+        {
+            products.ForEach(x =>
+            {
+                x.Img = $"../assets/{x.Img}";
+            });
+
+            return products;
+        }
 
         #endregion
     }

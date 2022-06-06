@@ -29,7 +29,9 @@ namespace BE.Services
         {
             try
             {
-                var loggedUser = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+                var loggedUser = await _dbContext
+                        .Users
+                        .FirstOrDefaultAsync(x => x.Email == user.Email && x.HashedPassword == user.HashedPassword);
 
                 return loggedUser;
             }

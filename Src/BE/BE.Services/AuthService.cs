@@ -1,6 +1,5 @@
 ﻿using BE.Contracts;
 using BE.Data.DbCtx;
-using BE.Data.Dtos;
 using BE.Data.Entities;
 using System;
 using System.Threading.Tasks;
@@ -36,8 +35,9 @@ namespace BE.Services
 
                 return user;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var s = ex;
                 throw;
             }
         }

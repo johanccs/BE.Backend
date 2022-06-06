@@ -2,6 +2,8 @@
 using BE.Common.Helpers;
 using BE.Contracts;
 using BE.Data.DbCtx;
+using BE.Infrastructure.Notification;
+using BE.Infrastructure.Notification.Classes;
 using BE.Services;
 using CE.Services;
 using MediatR;
@@ -19,7 +21,10 @@ namespace BE.IoC
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();
-            //services.AddScoped<IProdService>(c=> new ProductService(settings.Url, settings.Api_Key));
+            services.AddScoped<IProdService, ProductService>();
+            services.AddScoped<INotificationService<EmailMessage>>
+                (x => new EmailService(new Config("smtpauth.mweb.co.za", "56718804@mweb.co.za", "@1Mops4moa")));
+            services.AddScoped<ICartService, CartService>();
             //services.AddScoped<ILoggerService, LoggerService>();
         }
 

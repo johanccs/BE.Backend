@@ -1,4 +1,7 @@
 ﻿using BE.Contracts;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace BE.Common.Helpers
 {
@@ -6,7 +9,14 @@ namespace BE.Common.Helpers
     {
         public string HashPassword(string password)
         {
-            return password;
+            using(var sha256 = SHA256.Create())
+            {
+                var hashedPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes("super-secret-password"));
+
+                var hash = BitConverter.ToString(hashedPassword).Replace("-", " ").ToLower();
+
+                return hash;
+            }
         }
     }
 }
